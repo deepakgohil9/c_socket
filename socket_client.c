@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 #include <sys/socket.h>
-#include <netinet/in.h> //programm also works without this header file
 #include <arpa/inet.h>
 
 #define REQUEST_LEN 19
@@ -14,8 +14,9 @@ int main()
 
     // declaring and initialization of variables if required
     int sock, connection_status;
+    int recv_len = 0, total_recv_len = 0;
     struct sockaddr_in server_address;
-    char *server_ip = "142.251.33.68+";
+    char *server_ip = "142.251.33.68";
     char request[REQUEST_LEN] = "GET / HTTP/1.0\r\n\r\n";
     char server_response[RESPONSE_LEN];
 
@@ -43,11 +44,11 @@ int main()
     printf("[request sended to server]\n\n");
 
     // receving response from server
-    recv(sock, server_response, RESPONSE_LEN, 0);
-    printf("[response recevied from server]\n\n");
-
-    // printing the server response
-    printf("%s", server_response);
+    while ((recv_len = recv(sock, server_response, RESPONSE_LEN, 0) > 0))
+    {
+        printf("%s", server_response);
+        total_recv_len += recv_len;
+    }
 
     // closing socket
     close(sock);
