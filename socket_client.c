@@ -41,7 +41,10 @@ int main()
 		printf("[ERROR] connection failed");
 
 	// sending request to server
-	send(sock, request, REQUEST_LEN, 0);
+	if (send(sock, request, REQUEST_LEN, 0) < 0)
+	{
+		printf("[ERROR] failed to send request");
+	}
 	printf("[request sended to server]\n\n");
 
 	// receving response from server
