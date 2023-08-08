@@ -6,7 +6,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
-#define REQUEST_LEN 19
+#define REQUEST_LEN 22
 #define RESPONSE_LEN 1024
 
 int main()
@@ -16,8 +16,9 @@ int main()
 	int sock, connection_status;
 	int recv_len = 0, total_recv_len = 0;
 	struct sockaddr_in server_address;
-	char *server_ip = "54.204.94.184";
-	char request[REQUEST_LEN] = "GET / HTTP/1.0\r\n\r\n";
+	char *server_ip = "127.0.0.1";
+	// char request[REQUEST_LEN] = "GET /delay/5000 HTTP/1.0\r\n\r\n"; // REQUEST_LEN 32
+	char request[REQUEST_LEN] = "GET / HTTP/1.0\r\n\r\n"; // REQUEST_LEN 22
 	char server_response[RESPONSE_LEN + 1];
 	server_response[1024] = '\0'; // null character at the end of buffer so that output will not get overlapped
 
@@ -30,7 +31,7 @@ int main()
 
 	// setting address of server to connect socket
 	server_address.sin_family = AF_INET;
-	server_address.sin_port = htons(80);
+	server_address.sin_port = htons(8000);
 	server_address.sin_addr.s_addr = inet_addr(server_ip);
 
 	// connecting socket
